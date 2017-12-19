@@ -17,9 +17,9 @@ class CertificadoController extends Controller
      */
     public function store()
     {
-        $privkey = array("file://" . config('trust.priv_key'), "");
+        $privkey = array("file:/" . config('trust.priv_key'), "");
         
-        $cacert = "file://" . config('trust.ca_crt');
+        $cacert = "file:/" . config('trust.ca_crt');
 
         $dn = array(
             "countryName" => auth()->user()->country,
