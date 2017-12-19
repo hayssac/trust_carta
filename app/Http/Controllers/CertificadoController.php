@@ -17,9 +17,12 @@ class CertificadoController extends Controller
      */
     public function store()
     {
-        $privkey = array("file:/" . config('trust.priv_key'), "");
+
+        $config = array('config'=> "/etc/ssl/openssl.cnf");
         
-        $cacert = "file:/" . config('trust.ca_crt');
+        $privkey = openssl_pkey_get_private("file://" . config('trust.priv_key'), config('trust.pass'));
+        
+        $cacert = "file://" . config('trust.ca_crt');
 
         $dn = array(
             "countryName" => auth()->user()->country,
@@ -31,10 +34,22 @@ class CertificadoController extends Controller
             "emailAddress" => auth()->user()->email
         );
 
-        $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
+        // Generate a new private (and public) key pair
+/*         $privkey_user = openssl_pkey_new(array(
+            "private_key_bits" => 2048,
+            "private_key_type" => OPENSSL_KEYTYPE_RSA,
+        )); */
+
+        $privkey_user = openssl_pkey_new($config);
+
+        //$csr = openssl_csr_new($dn, $privkey_user, array('digest_alg' => 'sha256'));
+          
+        $csr = openssl_csr_new($dn, $privkey_user, $config);        
+
+        //$x509 = openssl_csr_sign($csr, $cacert, $privkey, 365, array('digest_alg'=>'sha256') );
         
-        $x509 = openssl_csr_sign($csr, $cacert, $privkey, 365, array('digest_alg'=>'sha256') );
-        
+        $x509 = openssl_csr_sign($csr, null, $privkey_user, 365, $config );
+
         $erros = '';
         while (($e = openssl_error_string()) !== false) {
             $erros = $erros . "\n" . $e;
