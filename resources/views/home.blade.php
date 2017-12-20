@@ -1,8 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+
+
 <div class="container">
     <div class="row">
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="col-sm-6 col-sm-offset-3 text-center">
             <div class="panel panel-default">
                 <div class="panel-heading">Dashboard</div>

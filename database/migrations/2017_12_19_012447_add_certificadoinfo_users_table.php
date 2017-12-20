@@ -19,6 +19,7 @@ class AddCertificadoinfoUsersTable extends Migration
             $table->string('city', 50);
             $table->string('company_name', 255);
             $table->string('company_unit_name', 255);
+            $table->text('pub_key')->nullable();
         });
     }
 

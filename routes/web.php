@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/gerar', 'CertificadoController@store')->name('gerar');
+
+Route::post('/certificado/login', 'Auth\LoginController@loginCertificado')->name('certificado.login');
