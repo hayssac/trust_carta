@@ -26,4 +26,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token', 'pub_key'
     ];
+
+    /**
+     * A user has many letters
+     *
+     * @return void
+     */
+    public function letters()
+    {
+        return $this->hasMany('App\Letter');
+    }
 }

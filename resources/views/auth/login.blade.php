@@ -4,7 +4,7 @@
 
 <div class="container">
     @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show">
+        <div class="alert alert-danger alert-dismissible">
             {{ session('error') }}
         </div>
     @endif

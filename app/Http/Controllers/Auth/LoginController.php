@@ -47,7 +47,7 @@ class LoginController extends Controller
         try {
             $certificado = file_get_contents($request->certificado);
             $certificadoLeitura = (openssl_x509_parse($certificado));    
-            $chavePublica = openssl_pkey_get_details(openssl_pkey_get_public($certificado))["key"];
+//            $chavePublica = openssl_pkey_get_details(openssl_pkey_get_public($certificado))["key"];
         } catch (Exception $e) {
             return back()->with('error', $e->getMessage());                        
         }
@@ -61,8 +61,8 @@ class LoginController extends Controller
         }        
 
         $usuario = User::where("email", "=", $email)->first();
-
-        if ($usuario->pub_key != $chavePublica) {
+        
+        if (!$usuario || ($usuario && !openssl_x509_check_private_key($certificado, $usuario->pub_key))) {
             return back()->with('error', 'Certificado inválido');
         } 
 

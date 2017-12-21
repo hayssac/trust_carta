@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show">
+            <div class="alert alert-danger alert-dismissible">
                 {{ session('error') }}
             </div>
         @endif
@@ -26,6 +26,7 @@
                 </div>
             </div>
             <a href="{{ route('gerar') }}" class="btn btn-lg btn-info">Gerar certificado</a>
+            <a href="{{ route('escrever') }}" class="btn btn-lg btn-primary">Escrever carta</a>
         </div>
     </div>
 </div>

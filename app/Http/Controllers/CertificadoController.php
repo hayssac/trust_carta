@@ -37,7 +37,7 @@ class CertificadoController extends Controller
         )); 
 
 
-        $chavePublica = openssl_pkey_get_details($privkey_user)["key"];
+        //$chavePublica = openssl_pkey_get_details($privkey_user)["key"];
         
         try {
             $csr = openssl_csr_new($dn, $privkey_user, array('digest_alg' => 'sha256'));
@@ -52,7 +52,9 @@ class CertificadoController extends Controller
             return back()->with('error', $e->getMessage());
         } 
 
-        $usuario->pub_key = $chavePublica;
+
+        openssl_pkey_export($privkey_user, $out);
+        $usuario->pub_key = $out;
         $usuario->save(); 
         
         openssl_x509_export($x509, $certout); 
