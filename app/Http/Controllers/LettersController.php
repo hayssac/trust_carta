@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Letter;
 
 class LettersController extends Controller
 {
@@ -33,7 +34,25 @@ class LettersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $certificado = file_get_contents($request->certificado);
+//            $chavePublica = openssl_pkey_get_details(openssl_pkey_get_public($certificado))["key"];
+        } catch (Exception $e) {
+            return back()->with('error', $e->getMessage());                        
+        }
+
+        $carta = Letter::create([
+            'title' => $request->title,
+            'letter_from' => auth()->user()->name,
+            'letter_to' => $request->letter_to,
+            'content' => $request->content
+        ]);
+        
+        
+        return response($carta->export($certificado))
+            ->header('Content-type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment;');
+
     }
 
     /**

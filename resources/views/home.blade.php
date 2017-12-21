@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         @if(session('error'))
-            <div class="alert alert-danger alert-dismissible">
+            <div class="alert alert-danger alert-dismissibleP">
                 {{ session('error') }}
             </div>
         @endif
